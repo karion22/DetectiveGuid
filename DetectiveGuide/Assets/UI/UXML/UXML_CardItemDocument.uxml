@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Style/USS_CardItemStyle.uss?fileID=7433441132597879392&amp;guid=f65003635a09a8e4ba2282e3e2d3f6dc&amp;type=3#USS_CardItemStyle" />
+    <ui:VisualElement class="background" style="flex-grow: 1;">
+        <ui:Label tabindex="-1" text="TITLE" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NameText" style="font-size: 32px; -unity-text-align: middle-center; color: rgb(161, 161, 161);" />
+        <ui:VisualElement name="Separator" style="border-left-color: rgb(159, 159, 159); border-right-color: rgb(159, 159, 159); border-top-color: rgb(159, 159, 159); border-bottom-color: rgb(159, 159, 159); border-top-width: 0.5px; border-right-width: 0.5px; border-bottom-width: 0.5px; border-left-width: 0.5px; width: 90%; align-self: center; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px;" />
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; padding-top: 8px; padding-right: 8px; padding-bottom: 8px; padding-left: 8px;">
+            <ui:Label tabindex="-1" text="캐릭터 (33%)" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CharacterLabel" class="item" />
+            <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CertainItemLabel1" class="item" />
+            <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CertainItemLabel2" class="item" />
+            <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CertainItemLabel3" class="item" />
+            <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CertainItemLabel4" class="item" />
+            <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CertainItemLabel5" class="item" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; height: 5%; flex-direction: row; justify-content: center; padding-top: 8px; padding-right: 8px; padding-bottom: 8px; padding-left: 8px; align-items: center;">
+            <ui:Button text="Set" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SetBtn" class="itemButton" />
+            <ui:Button text="Start" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartBtn" class="itemButton" />
+            <ui:Button text="Detail" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DetailBtn" class="itemButton" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

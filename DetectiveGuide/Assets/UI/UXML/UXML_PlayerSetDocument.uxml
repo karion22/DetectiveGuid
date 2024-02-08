@@ -1,0 +1,30 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Style/USS_TabButtonStyle.uss?fileID=7433441132597879392&amp;guid=fe174deda73a95a4d93deab46d998c88&amp;type=3#USS_TabButtonStyle" />
+    <ui:VisualElement style="flex-grow: 1; padding-top: 16px; padding-right: 16px; padding-bottom: 16px; padding-left: 16px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;">
+        <ui:VisualElement name="tabs" style="height: 48px;">
+            <ui:Label tabindex="-1" text="User1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tab1" class="tab currentSelectedTab" />
+            <ui:Label tabindex="-1" text="User2" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tab2" class="tab" />
+            <ui:Label tabindex="-1" text="User3" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tab3" class="tab" />
+            <ui:Label tabindex="-1" text="User4" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tab4" class="tab" />
+            <ui:Label tabindex="-1" text="User5" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tab5" class="tab" style="visibility: visible; display: flex;" />
+            <ui:Label tabindex="-1" text="User6" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tab6" class="tab" />
+            <ui:Label tabindex="-1" text="User7" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tab7" class="tab" />
+            <ui:Label tabindex="-1" text="User8" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tab8" class="tab" />
+        </ui:VisualElement>
+        <ui:VisualElement name="tabContent" style="flex-grow: 1; padding-top: 8px; padding-right: 8px; padding-bottom: 8px; padding-left: 8px; flex-direction: row;">
+            <ui:Button text="&lt;" parse-escape-sequences="true" display-tooltip-when-elided="true" name="LeftArrow" class="arrowBtn" />
+            <ui:VisualElement name="VisualElement" style="flex-grow: 1; padding-right: 8px; padding-left: 8px;">
+                <ui:TextField picking-mode="Ignore" label="UserName" value="-" name="UserName" style="-unity-font-style: bold; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;" />
+                <ui:DropdownField label="PlayerName" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="PlayerNameField" style="-unity-font-style: bold;" />
+                <ui:VisualElement style="height: 20px;" />
+                <ui:DropdownField label="Item1" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Item1DropDownField" />
+                <ui:DropdownField label="Item2" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Item2DropDownField" />
+                <ui:DropdownField label="Item3" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Item3DropDownField" />
+                <ui:DropdownField label="Item4" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Item4DropDownField" />
+                <ui:VisualElement style="flex-grow: 1;" />
+                <ui:Button text="Start" parse-escape-sequences="true" display-tooltip-when-elided="true" style="border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; background-color: rgb(70, 69, 180); -unity-font-style: bold;" />
+            </ui:VisualElement>
+            <ui:Button text="&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" name="RightArrow" class="arrowBtn" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

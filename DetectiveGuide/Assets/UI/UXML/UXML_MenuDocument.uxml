@@ -1,0 +1,29 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Style/USS_MainStyle.uss?fileID=7433441132597879392&amp;guid=fb728b513b790b647a875475682e8bbb&amp;type=3#USS_MainStyle" />
+    <ui:VisualElement name="Container" style="flex-grow: 1; align-items: center; justify-content: center; background-color: rgba(142, 142, 142, 0.5);">
+        <ui:Label tabindex="-1" text="The Clue Helper" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 32px; -unity-font-style: bold-and-italic; margin-bottom: 16px;" />
+        <ui:VisualElement class="itemElement">
+            <ui:Label tabindex="-1" text="GameMode" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="width: 55%; -unity-font-style: bold-and-italic; margin-left: 8px;" />
+            <ui:VisualElement style="flex-grow: 1; width: 35%; justify-content: center; padding-right: 8px; padding-left: 8px;">
+                <ui:EnumField type="eGameMode, Assembly-CSharp" name="GameModePopup" style="align-self: center; margin-right: 0; margin-bottom: 0; margin-left: 0; align-items: center; height: 80%; margin-top: 0;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="itemElement" style="-unity-font-style: bold-and-italic;">
+            <ui:Label tabindex="-1" text="PlayerCount" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="width: 55%; margin-left: 8px;" />
+            <ui:VisualElement style="flex-grow: 1; width: 35%; flex-direction: row; align-items: center;">
+                <ui:Label tabindex="-1" text="1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PlayerCountLabel" style="width: 45%;" />
+                <ui:Button text="+" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PlayerCountAddBtn" style="width: 21%; height: 24px; margin-top: 0; margin-right: 3%; margin-bottom: 0; margin-left: 0;" />
+                <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PlayerCountMinusBtn" style="width: 21%; height: 24px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="itemElement" style="flex-direction: row; -unity-font-style: bold-and-italic;">
+            <ui:Label tabindex="-1" text="ItemCount" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="width: 55%; margin-left: 8px;" />
+            <ui:VisualElement style="flex-grow: 1; width: 35%; flex-direction: row; align-items: center;">
+                <ui:Label tabindex="-1" text="1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ItemCountLabel" style="width: 45%;" />
+                <ui:Button text="+" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ItemCountAddBtn" style="width: 21%; height: 24px; margin-top: 0; margin-right: 3%; margin-bottom: 0; margin-left: 0;" />
+                <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ItemCountMinusBtn" style="width: 21%; height: 24px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Button text="Start" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartBtn" style="height: 32px; width: 100px; -unity-font-style: bold-and-italic; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;" />
+    </ui:VisualElement>
+</ui:UXML>

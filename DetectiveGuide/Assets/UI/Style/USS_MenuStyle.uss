@@ -1,0 +1,30 @@
+.itemElement {
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    -unity-font-style: bold;
+    font-size: 18px;
+    justify-content: space-around;
+    width: 96%;
+    flex-direction: row;
+    margin-right: 2%;
+    margin-left: 2%;
+    margin-bottom: 4px;
+}
+
+#Container {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
