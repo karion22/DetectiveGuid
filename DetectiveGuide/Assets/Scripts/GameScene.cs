@@ -30,7 +30,7 @@ public class GameScene : MonoBehaviour
         _cardItemPrefab = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/UXML/UXML_CardItemDocument.uxml");
 
         _cardItems.Clear();
-        for(int i = 0, end = GameMgr.Instance.UsePlayerCount; i < end; i++)
+        for(int i = 0, end = GameMgr.Instance.UserCount; i < end; i++)
         {
             CardItem item = new CardItem();
             //item.UserName = 
@@ -41,7 +41,7 @@ public class GameScene : MonoBehaviour
             _listView.makeItem = () => _cardItemPrefab.CloneTree();
             _listView.bindItem = (element, index) => {
                 int maxCount = _cardItems.Count;
-                int useItem = GameMgr.Instance.UseItemCount;
+                int useItem = GameMgr.Instance.ItemCount;
 
                 if (index < 0 || index >= maxCount || _cardItems[index] == null)
                 {

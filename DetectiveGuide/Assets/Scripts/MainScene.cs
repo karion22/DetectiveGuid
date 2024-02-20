@@ -30,20 +30,20 @@ public class MainScene : MonoBehaviour
         _itemCountLabel = root.Q<Label>("ItemCountLabel");
 
         root.Q<Button>("PlayerCountAddBtn").clicked += () => {
-            GameMgr.Instance.UserCount++;
+            GameMgr.Instance.IncreaseUserCount();
             UpdatePlayerCountLabel();
         };
         root.Q<Button>("PlayerCountMinusBtn").clicked += () => {
-            GameMgr.Instance.UserCount = Mathf.Max(GameMgr.Instance.UserCount - 1, 0);
+            GameMgr.Instance.DecreaseUserCount();
             UpdatePlayerCountLabel();
         };
 
         root.Q<Button>("ItemCountAddBtn").clicked += () => {
-            GameMgr.Instance.UseItemCount++;
+            GameMgr.Instance.IncreaseItemCount();
             UpdateItemCountLabel();
         };
         root.Q<Button>("ItemCountMinusBtn").clicked += () => {
-            GameMgr.Instance.UseItemCount = Mathf.Max(GameMgr.Instance.UseItemCount - 1, 0);
+            GameMgr.Instance.DecreaseItemCount();
             UpdateItemCountLabel();
         };
 
@@ -73,6 +73,6 @@ public class MainScene : MonoBehaviour
 
     private void UpdateItemCountLabel()
     {
-        _itemCountLabel.text = GameMgr.Instance.UseItemCount.ToString();
+        _itemCountLabel.text = GameMgr.Instance.ItemCount.ToString();
     }
 }

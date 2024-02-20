@@ -1,4 +1,4 @@
-#tabs {
+#tabButtons {
     flex-direction: row;
     background-color: rgb(4, 4, 17);
     -unity-font-style: bold;
@@ -30,7 +30,6 @@
 }
 
 .tab {
-    flex-grow: 1;
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
