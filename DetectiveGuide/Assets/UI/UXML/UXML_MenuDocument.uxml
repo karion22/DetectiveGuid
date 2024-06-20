@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Style/USS_MainStyle.uss?fileID=7433441132597879392&amp;guid=fb728b513b790b647a875475682e8bbb&amp;type=3#USS_MainStyle" />
+    <Style src="project://database/Assets/UI/Style/USS_GameStyle.uss?fileID=7433441132597879392&amp;guid=5bf0d20a3a7b3904cac7a022bfc1cfa4&amp;type=3#USS_GameStyle" />
     <ui:VisualElement name="Container" style="flex-grow: 1; align-items: center; justify-content: center; background-color: rgba(142, 142, 142, 0.5);">
         <ui:Label tabindex="-1" text="The Clue Helper" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 32px; -unity-font-style: bold-and-italic; margin-bottom: 16px;" />
         <ui:VisualElement class="itemElement">

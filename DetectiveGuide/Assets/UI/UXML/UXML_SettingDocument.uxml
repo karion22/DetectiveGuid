@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Style/USS_TabButtonStyle.uss?fileID=7433441132597879392&amp;guid=fe174deda73a95a4d93deab46d998c88&amp;type=3#USS_TabButtonStyle" />
+    <Style src="project://database/Assets/UI/Style/USS_GameStyle.uss?fileID=7433441132597879392&amp;guid=5bf0d20a3a7b3904cac7a022bfc1cfa4&amp;type=3#USS_GameStyle" />
     <ui:VisualElement style="flex-grow: 1; padding-top: 16px; padding-right: 16px; padding-bottom: 16px; padding-left: 16px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;">
         <ui:VisualElement name="tabButtons" style="height: 48px;">
             <ui:Button text="Button" name="Button1" class="currentSelectedTab" />

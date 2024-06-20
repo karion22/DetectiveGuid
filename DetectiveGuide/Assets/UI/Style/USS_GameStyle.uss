@@ -1,1 +1,138 @@
-VisualElement {}
+.background {
+    background-color: rgb(46, 46, 46);
+    border-left-color: rgb(26, 25, 25);
+    border-right-color: rgb(26, 25, 25);
+    border-top-color: rgb(26, 25, 25);
+    border-bottom-color: rgb(26, 25, 25);
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-top: 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+}
+
+.titleItem {
+    font-size: 20px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    color: rgb(192, 184, 184);
+}
+
+.item {
+    font-size: 18px;
+    -unity-font-style: bold;
+    color: rgb(137, 137, 137);
+}
+
+.itemButton {
+    width: 25%;
+    height: 75%;
+}
+
+.itemElement {
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    -unity-font-style: bold;
+    font-size: 18px;
+    justify-content: space-around;
+    width: 96%;
+    flex-direction: row;
+    margin-right: 2%;
+    margin-left: 2%;
+    margin-bottom: 4px;
+}
+
+#Container {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
+
+#tabButtons {
+    flex-direction: row;
+    background-color: rgb(4, 4, 17);
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    padding-bottom: 4px;
+}
+
+#tabContent {
+    font-size: 20px;
+    background-color: rgb(7, 8, 26);
+    color: rgb(255, 255, 255);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.tab {
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    margin-bottom: 0;
+}
+
+.currentSelectedTab {
+    background-color: rgb(108, 27, 27);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    color: rgb(255, 255, 255);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: -1px;
+    margin-left: 0;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+}
+
+.arrowBtn {
+    height: 64px;
+    align-self: center;
+    background-color: rgb(37, 41, 87);
+}

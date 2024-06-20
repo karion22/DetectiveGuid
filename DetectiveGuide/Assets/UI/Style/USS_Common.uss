@@ -1,0 +1,30 @@
+#ItemElement-CenterMiddle {
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#TitleElement-Center {
+    -unity-font-style: bold;
+    font-size: 32px;
+    color: rgb(137, 137, 137);
+    -unity-text-align: middle-center;
+}
+
+#Separator {
+    width: 90%;
+    border-left-color: rgb(159, 159, 159);
+    border-right-color: rgb(159, 159, 159);
+    border-top-color: rgb(159, 159, 159);
+    border-bottom-color: rgb(159, 159, 159);
+    border-top-width: 0.5px;
+    border-right-width: 0.5px;
+    border-bottom-width: 0.5px;
+    border-left-width: 0.5px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    align-self: center;
+}

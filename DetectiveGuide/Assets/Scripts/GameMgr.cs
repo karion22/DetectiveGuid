@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 // 게임 모드
 public enum eGameMode
@@ -22,8 +23,8 @@ public class UserData
     }
 }
 
-// 결과 정보
-public class ResultData
+// 진행 정보
+public class PlayItem
 {
     public string Name;         // 이름
     public string Weapon;       // 무기
@@ -31,7 +32,7 @@ public class ResultData
 }
 
 // 게임 진행 정보
-public class ClueData
+public class PlayHistory
 {
     public List<string> Names = new List<string>();
     public List<string> Weapons = new List<string>();
@@ -63,34 +64,32 @@ public class GameMgr : Singleton<GameMgr>
     public const int MAX_USER_COUNT = 8;
 
     // 게임 셋팅 값
-    private ClueData _dataSet = new ClueData();
+    private GameDataSetScriptable _dataSet;
+    private List<GameDataSetScriptable> _dataSetList;
 
     // 유저 값
     private List<UserData> _userList = new List<UserData>();
 
     // 플레이 정보
-    private List<ResultData> _playStack = new List<ResultData>();
+    private List<PlayHistory> _playStack = new List<PlayHistory>();
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        _dataSetList.Clear();
+        var async = Addressables.LoadAssetsAsync<GameDataSetScriptable>("GameData/GameRules", (value) => { _dataSetList.Add(value); });
+    }
 
     public void SetGameMode(eGameMode inGameMode)
     {
         GameMode = inGameMode;
-        _dataSet.Clear();
+        _playStack.Clear();
 
+         //(int)(GameMode);
         switch (GameMode)
         {
             case eGameMode.Clue:
-                {
-                    UserCount = 4;
-                    ItemCount = 3;
-
-                    string[] Names = { "피콕", "플럼", "스칼렛", "머스타드", "그린", "화이트" };
-                    string[] Weapon = { "파이프", "밧줄", "단검", "렌치", "권총", "촛대" };
-                    string[] Place = { "침실", "욕실", "마당", "식당", "차고", "게임룸", "서재", "거실", "부엌" };
-
-                    _dataSet.Names.AddRange(Names);
-                    _dataSet.Weapons.AddRange(Weapon);
-                    _dataSet.Places.AddRange(Place);
-                }
                 break;
 
             case eGameMode.HarryPotter:
