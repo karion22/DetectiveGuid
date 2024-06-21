@@ -16,9 +16,15 @@ public class eLoopScroll : eElement
     [System.Serializable] public class Started : UnityEvent { }
     [System.Serializable] public class Reached : UnityEvent { }
 
-    private class ColumnCollection : List<RectTransform>
+    private class ItemElement
     {
-        public RectTransform Insert(RectTransform inIteam) { Add(inIteam); return inIteam; }
+        public RectTransform m_Transform;
+        public int m_Index;
+    }
+
+    private class ColumnCollection : List<ItemElement>
+    {
+        public ItemElement Insert(ItemElement inIteam) { Add(inIteam); return inIteam; }
     }
 
     private class Row : IDisposable
@@ -26,7 +32,7 @@ public class eLoopScroll : eElement
         public int QueueIndex { get; private set; }
         public ColumnCollection Column = new ColumnCollection();
 
-        public RectTransform this[int index] { get { return Column[index]; } }
+        public ItemElement this[int index] { get { return Column[index]; } }
         public void Dispose() { Column.Clear(); }
     }
 
