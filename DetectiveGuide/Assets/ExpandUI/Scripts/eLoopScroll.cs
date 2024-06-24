@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -10,21 +11,19 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ScrollRect))]
 public class eLoopScroll : eElement
 {
-    [System.Serializable] public class ItemChanged : UnityEvent<int, bool, GameObject> { }
+    #region Custom Events
+    [System.Serializable] public class TargetItemChanged : UnityEvent { }
+    [System.Serializable] public class QueueItemChanged : UnityEvent<int, bool, GameObject> { }
     [System.Serializable] public class SelChanged : UnityEvent<int, bool, GameObject> { }
     [System.Serializable] public class LongPressed : UnityEvent<int, bool, GameObject> { }
     [System.Serializable] public class Started : UnityEvent { }
     [System.Serializable] public class Reached : UnityEvent { }
+    #endregion
 
-    private class ItemElement
+    #region Basic Element
+    private class ColumnCollection : List<RectTransform>
     {
-        public RectTransform m_Transform;
-        public int m_Index;
-    }
-
-    private class ColumnCollection : List<ItemElement>
-    {
-        public ItemElement Insert(ItemElement inIteam) { Add(inIteam); return inIteam; }
+        public RectTransform Insert(RectTransform inIteam) { Add(inIteam); return inIteam; }
     }
 
     private class Row : IDisposable
@@ -32,7 +31,7 @@ public class eLoopScroll : eElement
         public int QueueIndex { get; private set; }
         public ColumnCollection Column = new ColumnCollection();
 
-        public ItemElement this[int index] { get { return Column[index]; } }
+        public RectTransform this[int index] { get { return Column[index]; } }
         public void Dispose() { Column.Clear(); }
     }
 
@@ -52,7 +51,9 @@ public class eLoopScroll : eElement
             return row;
         }
     }
+    #endregion
 
+    #region Enum Definition
     // 방향 설정 : 가로 / 세로
     private enum eOrientation { Vettical, Horizontal }
 
@@ -62,6 +63,11 @@ public class eLoopScroll : eElement
     // 마지막에 도달했을 때 처리
     private enum eLoopMode { Default, Continue, Return }
 
+    // 선택할 때 옵션 
+    public enum eSelelctOption { Block, Select, Deselect }
+    #endregion
+
+    #region Properties
     // 스크롤 방향을 나타낸다.
     [SerializeField] private eOrientation m_Orientation = eOrientation.Vettical;
 
@@ -70,7 +76,7 @@ public class eLoopScroll : eElement
     [SerializeField] private bool m_IsDeselectable = false;
 
     [SerializeField] private int m_MultipleSelect = 1;
-    private List<int> m_SelelctedItems = new List<int>();
+    private List<int> m_SelectedItems = new List<int>();
 
     // 스크롤 안에 들어갈 아이템 프리팹 (RectTransform)
     [SerializeField] private RectTransform m_Item = null;
@@ -145,12 +151,6 @@ public class eLoopScroll : eElement
         } 
     }
 
-    public ItemChanged OnItemChanged;
-    public SelChanged OnSelChanged;
-    public LongPressed OnLongPressed;
-    public Started OnStarted;
-    public Reached OnReached;
-
     private RowCollection m_Rows = new RowCollection();
 
     private RectTransform m_RectTransform;
@@ -197,14 +197,31 @@ public class eLoopScroll : eElement
     [SerializeField] private int m_StartIndex = 0;
     [SerializeField] private bool m_bStartCenter = false;
     [SerializeField] private bool m_bStartAnimation = false;
+    #endregion
+
+    #region Events
+    // Target Item이 변경되었을 때
+    public TargetItemChanged OnTargetItemChanged;
+
+    // 아이템이 변경되었을 때 (삭제, 추가 등)
+    public QueueItemChanged OnQueueChanged;
+
+    // 아이템을 선택했을 때
+    public SelChanged OnSelChanged;
+
+    // 길게 눌렀을 때
+    public LongPressed OnLongPressed;
+    
+    // Start 함수에서 마지막에 호출될 때
+    public Started OnStarted;
+    public Reached OnReached;
+    #endregion
 
     protected override void Awake()
     {
         base.Awake();
 
         if(m_ScrollRect == null) m_ScrollRect= GetComponent<ScrollRect>();
-
-
     }
 
     protected override void Start()
@@ -311,10 +328,154 @@ public class eLoopScroll : eElement
 
     }
 
-    private int GetRealIndex(RectTransform inItem)
+    private GameObject GetItem(int inIndex)
     {
+        int row = inIndex / m_ColumnCount;
+        int column = inIndex % m_ColumnCount;
+
+        for(int r = 0, endRow = m_Rows.Count; r < endRow; r++)
+        {
+            if (m_Rows[r].QueueIndex == inIndex)
+                return m_Rows[r][column].gameObject;
+        }
+
+        return null;
+    }
+
+    private int GetDataIndex(RectTransform inRectTransform)
+    {
+        if(inRectTransform != null)
+        {
+            Row row = null;
+            for(int r = 0, endRow = m_Rows.Count; r < endRow; r++)
+            {
+                row = m_Rows[r];
+                for(int c = 0, endColumn = row.Column.Count; c < endColumn; c++)
+                {
+                    if (row[c] == inRectTransform)
+                        return row.QueueIndex * m_ColumnCount + c;
+                }
+            }
+        }
 
         return 0;
+    }
+
+    private int GetListIndex(RectTransform inRectTransform)
+    {
+        return 0;
+    }
+
+    public void SetItem(RectTransform inItem)
+    {
+        m_Item = inItem;
+
+        OnTargetItemChanged?.Invoke();
+    }
+
+    public void SetItemCount(int inCount)
+    {
+        ReleaseAllSelectedItems();
+    }
+
+    public void SelectItem(int inIndex, eSelelctOption inOption = eSelelctOption.Block)
+    {
+        if (m_Rows.Count == 0)
+        {
+            Debug.Log("Row count is empty");
+            return;
+        }
+
+        switch (inOption)
+        {
+            case eSelelctOption.Block:
+                SelectItem_Impl(inIndex, GetItem(inIndex));
+                break;
+
+            case eSelelctOption.Select:
+                {
+                    if (m_SelectedItems.Contains(inIndex) == false)
+                    {
+                        m_SelectedItems.Add(inIndex);
+                        OnSelChanged?.Invoke(inIndex, true, GetItem(inIndex));
+                    }
+                }
+                break;
+
+            case eSelelctOption.Deselect:
+                {
+                    if (m_SelectedItems.Contains(inIndex) == true)
+                    {
+                        m_SelectedItems.Remove(inIndex);
+                        OnSelChanged?.Invoke(inIndex, false, GetItem(inIndex));
+                    }
+                }
+                break;
+        }
+    }
+
+    private void SelectItem_Impl(int inIndex, GameObject inGo)
+    {
+        if(inIndex != -1)
+        {
+            switch(m_Selection)
+            {
+                case eSelelctionMode.Block:
+                    OnSelChanged?.Invoke(inIndex, true, inGo);
+                    break;
+
+                case eSelelctionMode.Single:
+                    {
+                        if(m_SelectedItems.Contains(inIndex) == true)
+                        {
+                            if (m_IsDeselectable)
+                                ReleaseAllSelectedItems();
+                        }
+                        else
+                        {
+                            m_SelectedItems.Add(inIndex);
+                            OnSelChanged?.Invoke(inIndex, true, inGo);
+                        }
+                    }
+                    break;
+
+                case eSelelctionMode.Multiple:
+                    {
+                        if(m_SelectedItems.Contains(inIndex) == true)
+                        {
+                            if(m_IsDeselectable)
+                            {
+                                m_SelectedItems.Remove(inIndex);
+                                OnSelChanged?.Invoke(inIndex, false, inGo);
+                            }
+                        }
+                        else
+                        {
+                            if(m_SelectedItems.Count < m_MultipleSelect)
+                            {
+                                m_SelectedItems.Add(inIndex);
+                                OnSelChanged?.Invoke(inIndex, true, inGo);
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    public bool IsSelected(int inIndex)
+    {
+        return (m_SelectedItems.Contains(inIndex));
+    }
+
+    public void ReleaseAllSelectedItems(bool bSendEvent = true)
+    {
+        if(bSendEvent)
+        {
+            for (int i = 0, end = m_SelectedItems.Count; i < end; i++)
+                OnSelChanged?.Invoke(m_SelectedItems[i], false, GetItem(m_SelectedItems[i]));
+        }
+        m_SelectedItems.Clear();
     }
 
     private void OnItemClicked(PointerEventData inEventData)
@@ -322,12 +483,21 @@ public class eLoopScroll : eElement
         if (inEventData.pointerEnter == null) return;
 
         RectTransform rt = inEventData.pointerEnter.GetComponent<RectTransform>();
-        int index = GetRealIndex(rt);
+        int index = GetDataIndex(rt);
+
+        if (index != -1)
+            SelectItem_Impl(index, rt.gameObject);
 
     }
 
     private void OnItemLongPressed(PointerEventData inEventData)
     {        
-        //RectTransform rt = inEventData.pointerEnter
+        if(inEventData.pointerEnter == null) return;
+
+        RectTransform rt = inEventData.pointerEnter.GetComponent<RectTransform>();
+        int index = GetDataIndex(rt);
+
+        if (index != -1)
+            OnLongPressed?.Invoke(index, false, rt.gameObject);
     }
 }
