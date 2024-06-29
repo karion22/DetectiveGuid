@@ -1,6 +1,6 @@
 using UnityEngine.UI;
 
-public class ePanel : eEventElement
+public class ePanel : eElement
 {
 
 }

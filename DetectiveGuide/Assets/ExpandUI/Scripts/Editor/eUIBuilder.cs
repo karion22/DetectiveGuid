@@ -165,7 +165,7 @@ public class eUIBuilderEditor : EditorWindow
         #region Expand UI
         EditorGUILayout.LabelField("[ Expand UI ]");
         EditorGUILayout.BeginHorizontal();
-        CreateButton("LoopScroll", "LoopScroll", m_LoopScrollPrefab, OnBtnClicked<eLoopScroll>);
+        CreateButton("LoopScroll", "LoopScroll", m_LoopScrollPrefab, OnBtnClicked<eLoopScroll>, true);
         EditorGUILayout.EndHorizontal();
         #endregion
 
@@ -212,12 +212,12 @@ public class eUIBuilderEditor : EditorWindow
         }
     }
 
-    private void CreateButton(string inButtonName, string inDescription, GameObject inPrefab, UnityAction<GameObject> onClicked, UnityAction onExpandBtnClicked = null)
+    private void CreateButton(string inButtonName, string inDescription, GameObject inPrefab, UnityAction<GameObject, bool> onClicked, bool searchByChild = false, UnityAction onExpandBtnClicked = null)
     {
-        CreateButton(inButtonName, inDescription, inPrefab, onClicked, onExpandBtnClicked, m_IconSize.x, m_IconSize.y, m_ExpandBtnSize.x, m_ExpandBtnSize.y); 
+        CreateButton(inButtonName, inDescription, inPrefab, onClicked, searchByChild, onExpandBtnClicked, m_IconSize.x, m_IconSize.y, m_ExpandBtnSize.x, m_ExpandBtnSize.y); 
     }
 
-    private void CreateButton(string inButtonName, string inDescription, GameObject inPrefab, UnityAction<GameObject> onClicked, UnityAction onExpandBtnClicked, float inWidth, float inHeight, float inExpandWidth, float inExpandHeight)
+    private void CreateButton(string inButtonName, string inDescription, GameObject inPrefab, UnityAction<GameObject, bool> onClicked, bool searchByChild, UnityAction onExpandBtnClicked, float inWidth, float inHeight, float inExpandWidth, float inExpandHeight)
     {
         float realWidth = inWidth;
         if (onExpandBtnClicked != null)
@@ -226,7 +226,7 @@ public class eUIBuilderEditor : EditorWindow
         EditorGUILayout.BeginVertical(GUILayout.Width(realWidth));
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button(inButtonName, GUILayout.Width(inWidth), GUILayout.Height(inHeight)))
-            onClicked?.Invoke(inPrefab);
+            onClicked?.Invoke(inPrefab, searchByChild);
 
         if (onExpandBtnClicked != null)
             CreateExpandIconButton(onExpandBtnClicked, m_ExpandBtnSize.x, m_ExpandBtnSize.y);
@@ -254,9 +254,9 @@ public class eUIBuilderEditor : EditorWindow
     }
     
 
-    private void CreateIconButton(string inIconName, string inDescription, GameObject inPrefab, UnityAction<GameObject> onClicked, UnityAction onExpandBtnClicked = null)
+    private void CreateIconButton(string inIconName, string inDescription, GameObject inPrefab, UnityAction<GameObject, bool> onClicked, bool searchByChild = false, UnityAction onExpandBtnClicked = null)
     {
-        CreateIconButton(inIconName, inDescription, inPrefab, onClicked, onExpandBtnClicked, m_IconSize.x, m_IconSize.y, m_ExpandBtnSize.x, m_ExpandBtnSize.y);
+        CreateIconButton(inIconName, inDescription, inPrefab, onClicked, searchByChild, onExpandBtnClicked, m_IconSize.x, m_IconSize.y, m_ExpandBtnSize.x, m_ExpandBtnSize.y);
     }
 
     
@@ -285,7 +285,7 @@ public class eUIBuilderEditor : EditorWindow
         EditorGUILayout.EndVertical();
     }    
 
-    private void CreateIconButton(string inIconName, string inDescription, GameObject inPrefab, UnityAction<GameObject> onClicked, UnityAction onExpandBtnClicked, float inWidth, float inHeight, float inExpandWidth, float inExpandHeight)
+    private void CreateIconButton(string inIconName, string inDescription, GameObject inPrefab, UnityAction<GameObject, bool> onClicked, bool searchByChild, UnityAction onExpandBtnClicked, float inWidth, float inHeight, float inExpandWidth, float inExpandHeight)
     {
         float realWidth = inWidth;
         if (onExpandBtnClicked != null)
@@ -294,7 +294,7 @@ public class eUIBuilderEditor : EditorWindow
         EditorGUILayout.BeginVertical(GUILayout.Width(realWidth));
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button(EditorGUIUtility.IconContent(inIconName), GUILayout.Width(inWidth), GUILayout.Height(inHeight)))
-            onClicked?.Invoke(inPrefab);
+            onClicked?.Invoke(inPrefab, searchByChild);
 
         if (onExpandBtnClicked != null)
             CreateExpandIconButton(onExpandBtnClicked, m_ExpandBtnSize.x, m_ExpandBtnSize.y);
@@ -349,7 +349,7 @@ public class eUIBuilderEditor : EditorWindow
 
     }
 
-    private void OnBtnClicked<T>(GameObject inPrefab) where T : eElement
+    private void OnBtnClicked<T>(GameObject inPrefab, bool bSearchChild) where T : eElement
     {
         var parentTr = IsValidCanvas();
 
@@ -360,7 +360,19 @@ public class eUIBuilderEditor : EditorWindow
             return;
         }
 
-        T newElement = newPrefab.GetComponent(typeof(T)) as T ?? newPrefab.AddComponent(typeof(T)) as T;
+        T newElement = null;
+        if(bSearchChild)
+        {
+            newElement = newPrefab.GetComponentInChildren(typeof(T)) as T;
+            
+            if(newElement == null)
+            {
+                DebugLog.Error(Utility.BuildString("Child not have {0}", typeof(T).ToString()));
+                return;
+            }
+        }
+        else
+            newElement = newPrefab.GetComponent(typeof(T)) as T ?? newPrefab.AddComponent(typeof(T)) as T;
         if(newElement == null)
         {
             DebugLog.Error(Utility.BuildString("{0} add component is failed", typeof(T).ToString()));
@@ -376,8 +388,10 @@ public class eUIBuilderEditor : EditorWindow
         if (Selection.activeGameObject == null)
         {
             var canvas = FindFirstObjectByType(typeof(eCanvas));
-            if(canvas == null)
+            if (canvas == null)
                 OnCanvasBtnClicked();
+            else
+                Selection.activeTransform = ((eCanvas)canvas).transform;
             return Selection.activeTransform;
         }
         else

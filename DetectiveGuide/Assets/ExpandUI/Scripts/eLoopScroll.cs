@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -12,15 +10,22 @@ using UnityEngine.UI;
 public class eLoopScroll : eElement
 {
     #region Custom Events
+    // 스크롤에서 사용하는 아이템(Prefab)이 변경되었을 때 이벤트
     [System.Serializable] public class TargetItemChanged : UnityEvent { }
+    // 큐에서 아이템을 변경할 때 발생하는 이벤트 (큐 재정렬 되는 등)
     [System.Serializable] public class QueueItemChanged : UnityEvent<int, bool, GameObject> { }
+    // 아이템을 선택했을 때 발생하는 이벤트
     [System.Serializable] public class SelChanged : UnityEvent<int, bool, GameObject> { }
+    // 길게 눌렀을 때 발생하는 이벤트
     [System.Serializable] public class LongPressed : UnityEvent<int, bool, GameObject> { }
+    // Start 함수에서 준비가 완료된 이후 발생하는 이벤트
     [System.Serializable] public class Started : UnityEvent { }
+    // 스크롤이 끝까지 도달했을 때 발생하는 이벤트
     [System.Serializable] public class Reached : UnityEvent { }
     #endregion
 
     #region Basic Element
+    // TODO : Index와 RectTransform을 가진 무언가로 개선의 여지가 필요.
     private class ColumnCollection : List<RectTransform>
     {
         public RectTransform Insert(RectTransform inIteam) { Add(inIteam); return inIteam; }
@@ -55,7 +60,7 @@ public class eLoopScroll : eElement
 
     #region Enum Definition
     // 방향 설정 : 가로 / 세로
-    private enum eOrientation { Vettical, Horizontal }
+    private enum eOrientation { Vertical, Horizontal }
 
     // 선택 모드 : 선택 불가 / 하나만 선택 / 여러개 선택
     private enum eSelelctionMode { Block, Single, Multiple }
@@ -69,13 +74,18 @@ public class eLoopScroll : eElement
 
     #region Properties
     // 스크롤 방향을 나타낸다.
-    [SerializeField] private eOrientation m_Orientation = eOrientation.Vettical;
+    [SerializeField] private eOrientation m_Orientation = eOrientation.Vertical;
 
+    // 선택 모드 (단순 클릭 / 하나만 토글 / 여러 개 토글
     [SerializeField] private eSelelctionMode m_Selection = eSelelctionMode.Block;
 
+    // 선택 해제가 가능한 지 여부 처리
     [SerializeField] private bool m_IsDeselectable = false;
 
+    // 여러 개 선택할 때 최대 선택 개수
     [SerializeField] private int m_MultipleSelect = 1;
+
+    // 선택되어 있는 아이템 인덱스(Unique Index)
     private List<int> m_SelectedItems = new List<int>();
 
     // 스크롤 안에 들어갈 아이템 프리팹 (RectTransform)
@@ -87,34 +97,22 @@ public class eLoopScroll : eElement
     // 끝에 도달했을 때 다시 처음으로 돌아가게 할 것인지
     [SerializeField] private bool m_IsLooping = false;
 
-    // 풀 사이즈
+    // 풀링 사이즈 (크면 클 수록 성능은 감소, 해당 개수만큼 미리 메모리 할당)
     [SerializeField, Range(1, 256)]
     private int m_PoolCapacity = 16;
 
     public int PoolCapacity { get { return m_PoolCapacity; } }
 
-    // 아이템 개수
-    [SerializeField, Range(1, 256)]
+    // 아이템 개수 (실제 데이터의 아이템 개수)
     private int m_ItemCount = 1;
 
     public int ItemCount { get { return m_ItemCount; } }
 
-    // 열 개수
-    [Range(1, 128)] public int m_ColumnCount = 1;
+    // 열 개수 (세로)
+    [SerializeField, Range(1, 128)] private int m_ColumnCount = 1;
 
-    // 행 개수
-    [SerializeField, Range(1, 256)] private int m_RowCount = 4;
-    public int RowCount 
-    { 
-        get
-        {
-            int value = ItemCount / m_ColumnCount;
-            // 0이 아닐 경우 개수가 하나 더 있음.
-            if (ItemCount % m_ColumnCount != 0)
-                value++;
-            return value;
-        }
-    }
+    // 행 개수 (가로, 열의 개수가 바뀌면 행의 개수는 자동으로 설정할 것)
+    private int m_RowCount = 1;
 
     [SerializeField] private float m_HorizontalSpace = 0f;
     public float HorizontalSpace
@@ -194,6 +192,11 @@ public class eLoopScroll : eElement
     [SerializeField] private int m_StartIndex = 0;
     [SerializeField] private bool m_bStartCenter = false;
     [SerializeField] private bool m_bStartAnimation = false;
+
+    private bool m_bScrollable = false;
+    private int m_ScrollIndex = 0;
+    private float m_ScrollPosition = 0f;
+    private float m_CenterPos = 0f;
     #endregion
 
     #region Events
@@ -221,6 +224,11 @@ public class eLoopScroll : eElement
         if(m_ContentScrollRect == null) m_ContentScrollRect = GetComponent<ScrollRect>();
     }
 
+    public override void OnCreated(int inElement, Transform inParent)
+    {
+        transform.parent.SetParent(inParent);
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -242,8 +250,9 @@ public class eLoopScroll : eElement
             m_ContentScrollRect.horizontalScrollbar = null;
         }
 
-        m_ContentScrollRect.horizontal = (m_Orientation != eOrientation.Vettical);
-        m_ContentScrollRect.vertical = (m_Orientation == eOrientation.Vettical);
+        bool isVertical = (m_Orientation == eOrientation.Vertical);
+        m_ContentScrollRect.horizontal = !isVertical;
+        m_ContentScrollRect.vertical = isVertical;
         m_ContentScrollRect.movementType = (m_IsLooping ? ScrollRect.MovementType.Unrestricted : m_ContentScrollRect.movementType);
         m_ContentScrollRect.horizontalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
         m_ContentScrollRect.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
@@ -317,6 +326,42 @@ public class eLoopScroll : eElement
 
     private void UpdateContents()
     {
+        m_ScrollIndex = 0;
+        m_ScrollPosition = 0f;
+
+        if (m_IsShowEmptyText && m_ItemCount <= 0)
+            m_EmptyText.gameObject.SetActive(true);
+        else
+            m_EmptyText.gameObject.SetActive(false);
+
+        if(m_Orientation == eOrientation.Vertical)
+        {
+            UpdateContents_Vertical();
+            m_bScrollable = (ContentRectTransform.sizeDelta.y > RectTransform.rect.height);
+        }
+        else if(m_Orientation == eOrientation.Horizontal)
+        {
+            UpdateContents_Horizontal();
+            m_bScrollable = (ContentRectTransform.sizeDelta.x > RectTransform.rect.width);
+        }
+    }
+
+    private void UpdateContents_Horizontal()
+    {
+        ContentRectTransform.anchoredPosition = new Vector2(0f, ContentRectTransform.anchoredPosition.y);
+        ContentRectTransform.anchorMin = Vector2.zero;
+        ContentRectTransform.anchorMax = Vector2.up;
+        ContentRectTransform.pivot = Vector2.up;
+
+        var delta = ContentRectTransform.sizeDelta;
+        delta.x = ItemSize.x * ((m_ItemCount / m_ColumnCount) + (m_ItemCount % m_ColumnCount > 0 ? 1 : 0));
+        ContentRectTransform.sizeDelta = delta;
+
+        m_CenterPos = (ContentRectTransform.rect.y + (ItemSize.y * m_ColumnCount)) * 0.5f - (m_VerticalSpace * 0.5f);
+    }
+
+    private void UpdateContents_Vertical()
+    {
 
     }
 
@@ -331,13 +376,44 @@ public class eLoopScroll : eElement
             if(isCenter)
                 centerPos = (RectTransform.rect.size.x * 0.5f) - (m_ItemSize.x * 0.5f);
         }
-        else if(m_Orientation == eOrientation.Vettical)
+        else if(m_Orientation == eOrientation.Vertical)
         {
             targetPos = ItemSize.y * (inIndex / m_ColumnCount);
 
             if (isCenter)
                 centerPos = (RectTransform.rect.size.y * 0.5f) - (m_ItemSize.y * 0.5f);
         }
+
+        if(useAnimation)
+        {
+            // TODO : Animation
+        }
+        else
+        {
+            if(m_Rows.Count != 0)
+            {
+                if(m_Orientation == eOrientation.Horizontal)
+                {
+                    ContentRectTransform.anchoredPosition = new Vector2(centerPos - targetPos, 0f);
+                    Update_Horizontal();
+                }
+                else if(m_Orientation == eOrientation.Vertical)
+                {
+                    ContentRectTransform.anchoredPosition = new Vector2(0f, targetPos - centerPos);
+                    Update_Vertical();
+                }
+            }
+        }
+    }
+
+    private void Update_Horizontal()
+    {
+
+    }
+
+    private void Update_Vertical()
+    {
+
     }
 
     private GameObject GetItem(int inIndex)
