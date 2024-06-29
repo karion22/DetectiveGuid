@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class eToggle : eElement
+public class eToggle : eEventElement
 {
 
 }

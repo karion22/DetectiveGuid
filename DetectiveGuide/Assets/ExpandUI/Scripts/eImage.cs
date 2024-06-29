@@ -1,8 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class eImage : ePanel
 {
+    protected Image m_Image;
+
+    protected Image Image
+    {
+        get
+        {
+            if (m_Image == null) m_Image = GetComponent<Image>();
+            return m_Image;
+        }
+    }
+
     public List<Sprite> m_States;
 
     public Color Color

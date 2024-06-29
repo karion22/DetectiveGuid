@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class eButton : eElement
+public class eButton : eEventElement
 {
 
 }

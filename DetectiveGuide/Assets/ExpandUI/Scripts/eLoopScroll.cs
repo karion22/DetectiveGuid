@@ -140,14 +140,13 @@ public class eLoopScroll : eElement
         get { return m_VerticalSpace; }
     }
 
-    [SerializeField] private Text m_EmptyText = null;
+    [SerializeField] private eText m_EmptyText = null;
     [SerializeField] private bool m_IsShowEmptyText = true;
     public string EmptyText 
     { 
         set 
-        { 
-            if (m_EmptyText != null) 
-                m_EmptyText.text = value; 
+        {
+            m_EmptyText?.SetText(value); 
         } 
     }
 
@@ -158,24 +157,22 @@ public class eLoopScroll : eElement
         get 
         {
             if (m_RectTransform == null) 
-            { 
                 m_RectTransform = GetComponent<RectTransform>(); 
-            } 
             return m_RectTransform; 
         } 
     }
 
     private RectTransform m_ContentRectTransform;
-    private ScrollRect m_ScrollRect;
+    private ScrollRect m_ContentScrollRect;
     private RectTransform ContentRectTransform
     {
         get
         {
             if(m_ContentRectTransform == null)
             {
-                if (m_ScrollRect == null)
-                    m_ScrollRect = GetComponent<ScrollRect>();
-                m_ContentRectTransform = m_ScrollRect.content.GetComponent<RectTransform>();
+                if (m_ContentScrollRect == null)
+                    m_ContentScrollRect = GetComponent<ScrollRect>();
+                m_ContentRectTransform = m_ContentScrollRect.content.GetComponent<RectTransform>();
             }
             return m_ContentRectTransform;
         }
@@ -221,7 +218,7 @@ public class eLoopScroll : eElement
     {
         base.Awake();
 
-        if(m_ScrollRect == null) m_ScrollRect= GetComponent<ScrollRect>();
+        if(m_ContentScrollRect == null) m_ContentScrollRect = GetComponent<ScrollRect>();
     }
 
     protected override void Start()
@@ -237,19 +234,19 @@ public class eLoopScroll : eElement
         WindowEvent.Instance.onScreenSizeChanged += OnResize;
         OnResize();
 
-        m_ScrollRect = GetComponent<ScrollRect>();
+        m_ContentScrollRect = GetComponent<ScrollRect>();
 
         if(m_IsLooping)
         {
-            m_ScrollRect.verticalScrollbar = null;
-            m_ScrollRect.horizontalScrollbar = null;
+            m_ContentScrollRect.verticalScrollbar = null;
+            m_ContentScrollRect.horizontalScrollbar = null;
         }
 
-        m_ScrollRect.horizontal = (m_Orientation != eOrientation.Vettical);
-        m_ScrollRect.vertical = (m_Orientation == eOrientation.Vettical);
-        m_ScrollRect.movementType = (m_IsLooping ? ScrollRect.MovementType.Unrestricted : m_ScrollRect.movementType);
-        m_ScrollRect.horizontalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
-        m_ScrollRect.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
+        m_ContentScrollRect.horizontal = (m_Orientation != eOrientation.Vettical);
+        m_ContentScrollRect.vertical = (m_Orientation == eOrientation.Vettical);
+        m_ContentScrollRect.movementType = (m_IsLooping ? ScrollRect.MovementType.Unrestricted : m_ContentScrollRect.movementType);
+        m_ContentScrollRect.horizontalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
+        m_ContentScrollRect.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
         //
 
         var sb = new StringBuilder();
@@ -259,7 +256,7 @@ public class eLoopScroll : eElement
                 m_Rows.Insert();
 
             var newItem = GameObject.Instantiate(m_Item) as RectTransform;
-            newItem.SetParent(m_ScrollRect.content.transform, false);
+            newItem.SetParent(m_ContentScrollRect.content.transform, false);
             newItem.anchorMin = Vector2.up;
             newItem.anchorMax = Vector2.up;
             newItem.pivot = Vector2.up;
@@ -270,7 +267,7 @@ public class eLoopScroll : eElement
 
             sb.Clear();
 
-            eElement uiEvent = newItem.GetComponent<eElement>();
+            eEventElement uiEvent = newItem.GetComponent<eEventElement>();
             if ( uiEvent != null )
             {
                 uiEvent.onClickEvent.AddListener(OnItemClicked);
@@ -325,7 +322,22 @@ public class eLoopScroll : eElement
 
     private void MoveToItem(int inIndex, bool isCenter = false, bool useAnimation = false)
     {
+        float targetPos = 0f, centerPos = 0f;
 
+        if(m_Orientation == eOrientation.Horizontal)
+        {
+            targetPos = ItemSize.x * (inIndex / m_ColumnCount);
+
+            if(isCenter)
+                centerPos = (RectTransform.rect.size.x * 0.5f) - (m_ItemSize.x * 0.5f);
+        }
+        else if(m_Orientation == eOrientation.Vettical)
+        {
+            targetPos = ItemSize.y * (inIndex / m_ColumnCount);
+
+            if (isCenter)
+                centerPos = (RectTransform.rect.size.y * 0.5f) - (m_ItemSize.y * 0.5f);
+        }
     }
 
     private GameObject GetItem(int inIndex)

@@ -24,10 +24,4 @@ public class eElement : MonoBehaviour
     public void Update()
     {
     }
-
-    #region Events
-    public UnityEvent<PointerEventData> onClickEvent = null;
-    public UnityEvent<PointerEventData> onLongPressed = null;
-    public UnityEvent<PointerEventData> onRightClicked = null;
-    #endregion
 }
