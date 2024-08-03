@@ -1224,11 +1224,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cffabd6a0440816428ddf4d1033592b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlayerCountText: {fileID: 0}
-  m_PlayTurnText: {fileID: 0}
-  m_SettingBtn: {fileID: 0}
-  m_ScrollRect: {fileID: 0}
-  m_LogBtn: {fileID: 0}
+  m_PlayerCountText: {fileID: 1969708278}
+  m_PlayTurnText: {fileID: 861982564}
+  m_SettingBtn: {fileID: 1277669312}
+  m_ScrollRect: {fileID: 1098207740}
+  m_LogBtn: {fileID: 558882525}
 --- !u!1 &860592326
 GameObject:
   m_ObjectHideFlags: 0
