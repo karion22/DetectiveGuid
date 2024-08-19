@@ -13,17 +13,22 @@ public class GameScene_uGUI : GameScene
     #endregion
 
     #region Body Panel
+    [SerializeField] private PlayItem_uGUI[] m_PlayItems = null;
     [SerializeField] private ScrollRect m_ScrollRect = null;
     #endregion
 
     #region Bottom Panel
     [SerializeField] private Button m_LogBtn = null;
+    [SerializeField] private Button m_NextBtn = null;
     #endregion
 
     [SerializeField] private GameObject m_ItemPrefab = null;
     private List<UserCardPanel_uGUI> m_Items = new List<UserCardPanel_uGUI>();
 
     [SerializeField] private GameObject m_SettingPrefab = null;
+    private List<GameObject> m_PopupList = new List<GameObject>();
+
+    private int m_Turn = 1;
 
     [ExecuteInEditMode]
     [ContextMenu("Auto Find UI")]
@@ -36,6 +41,7 @@ public class GameScene_uGUI : GameScene
         m_ScrollRect = transform.FindEx<ScrollRect>("ScrollView");
 
         m_LogBtn = transform.FindEx<Button>("LogButton");
+        m_NextBtn = transform.FindEx<Button>("NextButton");
     }
 
     public override void OnInitialize()
@@ -43,18 +49,106 @@ public class GameScene_uGUI : GameScene
         base.OnInitialize();
 
         m_SettingBtn.onClick.RemoveAllListeners();
-        m_SettingBtn.onClick.AddListener(() => {
-            Instantiate(m_SettingPrefab);
+        m_SettingBtn.onClick.AddListener(() =>
+        {
+            var popup = ShowPopup<OptionPopup_uGUI>(m_SettingPrefab, true);
+            if (popup != null)
+                popup.onClosed = CloseSettingPopup;
         });
 
-        for(int i = 0; i < GameMgr.Instance.UserCount; i++)
+        m_LogBtn.onClick.RemoveAllListeners();
+        m_LogBtn.onClick.AddListener(() => { 
+
+        });
+
+        m_NextBtn.onClick.RemoveAllListeners();
+        m_NextBtn.onClick.AddListener(() => {
+            NextTurn();
+        });
+
+        RebuildPlayItem();
+        RebuildItems();
+    }
+
+    private void RebuildPlayItem()
+    {
+        for(int i = 0, end = m_PlayItems.Length; i < end; i++)
         {
-            var item = Instantiate(m_ItemPrefab, m_ScrollRect.content);              
-            if(item != null)
+            m_PlayItems[i].Initialize();
+        }
+    }
+
+    private void RebuildItems()
+    {
+        // Remove Items
+        for (int i = m_Items.Count - 1; i >= 0; i--)
+            DestroyImmediate(m_Items[i].gameObject);
+        m_Items.Clear();
+
+        // Add Items
+        for (int i = 0; i < GameMgr.Instance.UserCount; i++)
+        {
+            var item = Instantiate(m_ItemPrefab, m_ScrollRect.content);
+            if (item != null)
             {
-                 var cardPanel = item.GetComponent<UserCardPanel_uGUI>();
-                m_Items.Add(cardPanel);
+                var card = item.GetComponent<UserCardPanel_uGUI>();
+                card.Initialize();
+                card.SetValue(null);
+                m_Items.Add(card);
             }
         }
+
+        // UI Update
+        m_PlayerCountText.text = GameMgr.Instance.UserCount.ToString();
+
+        UpdateTurn();
+    }
+
+    private void UpdateTurn()
+    {
+        m_PlayTurnText.text = m_Turn.ToString();
+    }
+
+    private void NextTurn()
+    {
+        m_Turn++;
+
+        for (int i = 0, end = m_Items.Count; i < end; i++)
+            m_Items[i].SetEnable(true);
+
+        UpdateTurn();
+    }
+
+    private T ShowPopup<T>(GameObject inPrefab, bool isAlone)
+    {
+        if(isAlone && m_PopupList.Count > 0)
+        {
+            for (int i = m_PopupList.Count - 1; i >= 0; i--)
+            {
+                DestroyImmediate(m_PopupList[i]);
+                m_PopupList[i] = null;
+            }
+            m_PopupList.Clear();
+        }
+
+        var targetGo = Instantiate(m_SettingPrefab);
+        m_PopupList.Add(targetGo);
+
+        return targetGo.GetComponent<T>();
+    }
+
+    private void ClosePopup(GameObject inPopup)
+    {
+        if (inPopup != null)
+        {
+            if (m_PopupList.Remove(inPopup))
+                DestroyImmediate(inPopup);
+        }
+    }
+
+    public void CloseSettingPopup(GameObject inPopup)
+    {
+        ClosePopup(inPopup);
+        RebuildItems();
     }
 }

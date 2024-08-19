@@ -1000,7 +1000,7 @@ GameObject:
   - component: {fileID: 8990298714708977032}
   - component: {fileID: 7205920290325445849}
   m_Layer: 5
-  m_Name: ItemRightButton
+  m_Name: ItemDownButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1451,7 +1451,7 @@ GameObject:
   - component: {fileID: 5718843679433814555}
   - component: {fileID: 702849499808301056}
   m_Layer: 5
-  m_Name: PlayerLeftButton
+  m_Name: PlayerUpButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1690,12 +1690,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PlayerSlider: {fileID: 8206487919651589914}
-  m_PlayerLeftButton: {fileID: 5718843679433814555}
-  m_PlayerRightButton: {fileID: 6472070539743045475}
+  m_PlayerUpButton: {fileID: 5718843679433814555}
+  m_PlayerDownButton: {fileID: 6472070539743045475}
   m_PlayerInputField: {fileID: 9029185337070963550}
   m_ItemSlider: {fileID: 7865758077100249109}
-  m_ItemLeftButton: {fileID: 1772266282374858222}
-  m_ItemRightButton: {fileID: 8990298714708977032}
+  m_ItemUpButton: {fileID: 1772266282374858222}
+  m_ItemDownButton: {fileID: 8990298714708977032}
   m_ItemInputField: {fileID: 5018724294947673370}
   m_ApplyBtn: {fileID: 5279662697836264952}
   m_CloseBtn: {fileID: 8253922659183344211}
@@ -2645,7 +2645,7 @@ GameObject:
   - component: {fileID: 6472070539743045475}
   - component: {fileID: 2213770495423811685}
   m_Layer: 5
-  m_Name: PlayerRightButton
+  m_Name: PlayerDownButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2917,7 +2917,7 @@ GameObject:
   - component: {fileID: 1772266282374858222}
   - component: {fileID: 1306742095928866666}
   m_Layer: 5
-  m_Name: ItemLeftButton
+  m_Name: ItemUpButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3236,12 +3236,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PlayerSlider: {fileID: 0}
-  m_PlayerLeftButton: {fileID: 0}
-  m_PlayerRightButton: {fileID: 0}
+  m_PlayerUpButton: {fileID: 0}
+  m_PlayerDownButton: {fileID: 0}
   m_PlayerInputField: {fileID: 0}
   m_ItemSlider: {fileID: 0}
-  m_ItemLeftButton: {fileID: 0}
-  m_ItemRightButton: {fileID: 0}
+  m_ItemUpButton: {fileID: 0}
+  m_ItemDownButton: {fileID: 0}
   m_ItemInputField: {fileID: 0}
   m_ApplyBtn: {fileID: 0}
   m_CloseBtn: {fileID: 0}
@@ -3897,12 +3897,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PlayerSlider: {fileID: 0}
-  m_PlayerLeftButton: {fileID: 0}
-  m_PlayerRightButton: {fileID: 0}
+  m_PlayerUpButton: {fileID: 0}
+  m_PlayerDownButton: {fileID: 0}
   m_PlayerInputField: {fileID: 0}
   m_ItemSlider: {fileID: 0}
-  m_ItemLeftButton: {fileID: 0}
-  m_ItemRightButton: {fileID: 0}
+  m_ItemUpButton: {fileID: 0}
+  m_ItemDownButton: {fileID: 0}
   m_ItemInputField: {fileID: 0}
   m_ApplyBtn: {fileID: 0}
   m_CloseBtn: {fileID: 0}

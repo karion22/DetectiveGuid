@@ -2,13 +2,14 @@ using KRN.Utility;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Windows;
 
 // 게임 모드
 public enum eGameMode
 {
     Clue,
     HarryPotter,
-    Custom
+    Custom,
 }
 
 public enum eDataType
@@ -136,31 +137,44 @@ public class GameMgr : Singleton<GameMgr>
 
     // 게임 셋팅 값
     private GameDataSetScriptable m_DataSet;
-    private List<GameDataSetScriptable> m_DataSetList;
+    public GameDataSetScriptable DataSet
+    {
+        get { return m_DataSet; }
+    }
+
+    private List<GameDataSetScriptable> m_DataSetList = new List<GameDataSetScriptable>();
 
     // 유저 값
     private List<UserData> m_UserList = new List<UserData>();
 
     // 플레이 정보
-    private List<PlayHistory> m_PlayStack = new List<PlayHistory>();
+    public List<PlayHistory> m_PlayStack = new List<PlayHistory>();
+
+    // 
+    public bool m_IsReady = false;
 
     public override void Awake()
     {
         base.Awake();
 
+        m_IsReady = false;
+
         m_DataSetList.Clear();
-        var async = Addressables.LoadAssetsAsync<GameDataSetScriptable>("GameData/GameRules", (value) => { m_DataSetList.Add(value); });
+
+        var handle = Addressables.LoadAssetsAsync<GameDataSetScriptable>("ruledata", (value) => { m_DataSetList.Add(value); });
+        handle.Completed += (result) => {
+            m_IsReady = true;
+        };
     }
 
     public void SetGameMode(eGameMode inGameMode)
     {
         GameMode = inGameMode;
-        m_PlayStack.Clear();
 
-         //(int)(GameMode);
         switch (GameMode)
         {
             case eGameMode.Clue:
+                m_DataSet = m_DataSetList[0];
                 break;
 
             case eGameMode.HarryPotter:
@@ -168,6 +182,9 @@ public class GameMgr : Singleton<GameMgr>
                 break;
 
             case eGameMode.Custom:
+                break;
+
+            default:
                 break;
         }
 

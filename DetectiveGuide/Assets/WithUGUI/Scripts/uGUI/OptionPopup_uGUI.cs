@@ -1,19 +1,20 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class OptionPopup_uGUI : MonoBehaviour
 {
     // Player
     [SerializeField] private Slider m_PlayerSlider = null;
-    [SerializeField] private Button m_PlayerLeftButton = null;
-    [SerializeField] private Button m_PlayerRightButton = null;
+    [SerializeField] private Button m_PlayerUpButton = null;
+    [SerializeField] private Button m_PlayerDownButton = null;
     [SerializeField] private TMP_InputField m_PlayerInputField = null;
 
     // Item
     [SerializeField] private Slider m_ItemSlider = null;
-    [SerializeField] private Button m_ItemLeftButton = null;
-    [SerializeField] private Button m_ItemRightButton = null;
+    [SerializeField] private Button m_ItemUpButton = null;
+    [SerializeField] private Button m_ItemDownButton = null;
     [SerializeField] private TMP_InputField m_ItemInputField = null;
 
     // 
@@ -24,25 +25,27 @@ public class OptionPopup_uGUI : MonoBehaviour
     private int m_UserCount = 1;
     private int m_ItemCount = 1;
 
+    public UnityAction<GameObject> onClosed = null;
+
     private void Start()
     {
         m_UserCount = GameMgr.Instance.UserCount;
         m_ItemCount = GameMgr.Instance.ItemCount;
 
         #region Player
-        if (m_PlayerLeftButton != null)
+        if (m_PlayerDownButton != null)
         {
-            m_PlayerLeftButton.onClick.RemoveAllListeners();
-            m_PlayerLeftButton.onClick.AddListener(() => {
+            m_PlayerDownButton.onClick.RemoveAllListeners();
+            m_PlayerDownButton.onClick.AddListener(() => {
                 m_UserCount = Mathf.Max(1, m_UserCount - 1);
                 UpdateUserSlider(m_UserCount);
             });
         }
 
-        if(m_PlayerRightButton != null)
+        if(m_PlayerUpButton != null)
         {
-            m_PlayerRightButton.onClick.RemoveAllListeners();
-            m_PlayerRightButton.onClick.AddListener(() => {
+            m_PlayerUpButton.onClick.RemoveAllListeners();
+            m_PlayerUpButton.onClick.AddListener(() => {
                 m_UserCount = Mathf.Min(GameMgr.MAX_USER_COUNT, m_UserCount + 1);
                 UpdateUserSlider(m_UserCount);
             });
@@ -64,23 +67,33 @@ public class OptionPopup_uGUI : MonoBehaviour
         if(m_PlayerInputField != null)
         {
             UpdateUserLabel();
+            m_PlayerInputField.onValueChanged.RemoveAllListeners();
+            m_PlayerInputField.onValueChanged.AddListener((value) => {
+                if(int.TryParse(value, out m_UserCount))
+                {
+                    if(m_UserCount < 1 || m_UserCount > GameMgr.MAX_USER_COUNT)
+                        m_PlayerInputField.text = Mathf.Max(Mathf.Min(m_UserCount, 1), GameMgr.MAX_USER_COUNT).ToString();
+                    else
+                        UpdateUserSlider(m_UserCount);
+                }
+            });
         }
         #endregion
 
         #region Item
-        if (m_ItemLeftButton != null)
+        if (m_ItemDownButton != null)
         {
-            m_ItemLeftButton.onClick.RemoveAllListeners();
-            m_ItemLeftButton.onClick.AddListener(() => {
+            m_ItemDownButton.onClick.RemoveAllListeners();
+            m_ItemDownButton.onClick.AddListener(() => {
                 m_ItemCount = Mathf.Max(1, m_ItemCount - 1);
                 UpdateItemSlider(m_ItemCount);
             });
         }
 
-        if (m_ItemRightButton != null)
+        if (m_ItemUpButton != null)
         {
-            m_ItemRightButton.onClick.RemoveAllListeners();
-            m_ItemRightButton.onClick.AddListener(() => {
+            m_ItemUpButton.onClick.RemoveAllListeners();
+            m_ItemUpButton.onClick.AddListener(() => {
                 m_ItemCount = Mathf.Min(GameMgr.MAX_ITEM_COUNT, m_ItemCount + 1);
                 UpdateItemSlider(m_ItemCount);
             });
@@ -102,6 +115,16 @@ public class OptionPopup_uGUI : MonoBehaviour
         if (m_ItemInputField != null)
         {
             UpdateItemLabel();
+            m_ItemInputField.onValueChanged.RemoveAllListeners();
+            m_ItemInputField.onValueChanged.AddListener((value) => { 
+                if(int.TryParse(value, out m_ItemCount))
+                {
+                    if(m_ItemCount < 1 || m_ItemCount > GameMgr.MAX_ITEM_COUNT)
+                        m_ItemInputField.text = Mathf.Max(Mathf.Min(m_ItemCount, 1), GameMgr.MAX_ITEM_COUNT).ToString();
+                    else
+                        UpdateItemSlider(m_ItemCount);
+                }
+            });
         }
         #endregion
 
@@ -131,7 +154,7 @@ public class OptionPopup_uGUI : MonoBehaviour
 
     private void UpdateUserLabel()
     {
-        m_PlayerInputField.text = GameMgr.Instance.UserCount.ToString();
+        m_PlayerInputField.text = m_UserCount.ToString();
     }
 
     private void UpdateItemSlider(int inValue)
@@ -141,11 +164,11 @@ public class OptionPopup_uGUI : MonoBehaviour
 
     private void UpdateItemLabel()
     {
-        m_ItemInputField.text = GameMgr.Instance.ItemCount.ToString();
+        m_ItemInputField.text = m_ItemCount.ToString();
     }
 
     private void Close()
     {
-        Destroy(gameObject);
+        onClosed?.Invoke(this.gameObject);
     }
 }
