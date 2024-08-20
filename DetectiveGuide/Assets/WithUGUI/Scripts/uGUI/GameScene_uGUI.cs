@@ -93,6 +93,7 @@ public class GameScene_uGUI : GameScene
             {
                 var card = item.GetComponent<UserCardPanel_uGUI>();
                 card.Initialize();
+                card.SetUserValue(GameMgr.Instance.UserList[i]);
                 card.SetValue(null);
                 m_Items.Add(card);
             }

@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using TMPro;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -26,8 +26,10 @@ public class OptionPopup_uGUI : MonoBehaviour
     [SerializeField] private Button m_CloseBtn = null;
 
     //
-    private int m_UserCount = 1;
-    private int m_ItemCount = 1;
+    private int m_UserCount = 0;
+    private int m_ItemCount = 0;
+
+    private List<UserData> m_UserData = new List<UserData>();
 
     public UnityAction<GameObject> onClosed = null;
 
@@ -35,6 +37,9 @@ public class OptionPopup_uGUI : MonoBehaviour
     {
         m_UserCount = GameMgr.Instance.UserCount;
         m_ItemCount = GameMgr.Instance.ItemCount;
+
+        m_UserData.Clear();
+        m_UserData.AddRange(GameMgr.Instance.UserList);
 
         #region Player
         if (m_UserDownButton != null)
@@ -65,7 +70,7 @@ public class OptionPopup_uGUI : MonoBehaviour
             m_UserSlider.onValueChanged.AddListener((value) => {
                 int newValue = (int)value;
                 UpdateUserLabel(newValue);
-                RebuildUserList(m_UserCount, newValue);
+                RebuildUserList(m_UserCount, newValue, false);
                 m_UserCount = newValue;
             });
         }
@@ -86,7 +91,7 @@ public class OptionPopup_uGUI : MonoBehaviour
             });
         }
 
-        RebuildUserList(0, m_UserCount);
+        RebuildUserList(0, m_UserCount, true);
         #endregion
 
         #region Item
@@ -143,6 +148,7 @@ public class OptionPopup_uGUI : MonoBehaviour
             m_ApplyBtn.onClick.AddListener(() => {
                 GameMgr.Instance.SetUserCount(m_UserCount);
                 GameMgr.Instance.SetItemCount(m_ItemCount);
+                GameMgr.Instance.SetUserDataList(m_UserData);
                 Close();
             });
         }
@@ -167,7 +173,7 @@ public class OptionPopup_uGUI : MonoBehaviour
 
     }
 
-    private void RebuildUserList(int inPrevValue, int inNewValue)
+    private void RebuildUserList(int inPrevValue, int inNewValue, bool isInit)
     {
         var rt = m_UserGridGroup.transform as RectTransform;
         if (rt != null)
@@ -184,18 +190,28 @@ public class OptionPopup_uGUI : MonoBehaviour
                 var child = rt.GetChild(i);
                 if (child != null)
                     DestroyImmediate(child.gameObject);
+
+                m_UserData.RemoveAt(i);
             }
 
             // Add Items
             int nDiff = inNewValue - inPrevValue;
+
             for (int i = 0; i < nDiff; i++)
             {
+                if(isInit == false)
+                    m_UserData.Add(new UserData());
+
                 var child = Instantiate(m_UserItemPrefab, m_UserGridGroup.gameObject.transform);
                 if (child != null)
                 {
                     var item = child.GetComponent<UserNameItemPanel_uGUI>();
                     if (item != null)
-                        item.SetItem("");
+                    {
+                        int nRealIndex = inPrevValue + i;
+                        item.Initialize(nRealIndex, m_UserData[nRealIndex]);
+                        item.SetItem(m_UserData[nRealIndex].UserName);
+                    }
                 }
             }
         }

@@ -9,6 +9,7 @@ public class GameScene : MonoBehaviour
     protected virtual IEnumerator Start() 
     {
         GameMgr.Instance.Restart();
+        GameMgr.Instance.BuildUserList();
 
         while(GameMgr.Instance.m_IsReady == false)
             yield return null;

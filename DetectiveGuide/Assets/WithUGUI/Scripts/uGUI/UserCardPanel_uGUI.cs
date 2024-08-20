@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,12 +25,15 @@ public class UserCardPanel_uGUI : MonoBehaviour
         }
     }
 
+    public void SetUserValue([NotNull] UserData inUserData)
+    {
+        m_UserNameLabel.text = inUserData.UserName;
+    }
+
     public void SetValue(PlayItem inItem)
     {
         if(inItem == null)
         {
-            m_UserNameLabel.text = "";
-
             for (int i = 0, end = m_Items.Length; i < end; i++)
                 m_Items[i].text = "";
 
@@ -37,8 +41,6 @@ public class UserCardPanel_uGUI : MonoBehaviour
         }
         else
         {
-            m_UserNameLabel.text = inItem.m_UserName;
-
             int nSize = inItem.m_Items.Count;
             for (int i = 0, end = m_Items.Length; i < end; i++)
             {

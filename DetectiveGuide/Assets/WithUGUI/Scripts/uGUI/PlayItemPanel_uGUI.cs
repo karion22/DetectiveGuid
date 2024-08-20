@@ -8,7 +8,7 @@ public class PlayItem_uGUI : MonoBehaviour
 
     public void Initialize()
     {
-        //UpdateItems();
+
     }
 
     public void UpdateItems(PlayItem inItem)

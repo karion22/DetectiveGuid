@@ -23,7 +23,7 @@ public enum eDataType
 public class UserData
 {
     public string UserName;
-    public List<string> Items = new List<string>();
+    public List<PlayDetailItem> Items = new List<PlayDetailItem>();
 
     public void Clear()
     {
@@ -146,6 +146,10 @@ public class GameMgr : Singleton<GameMgr>
 
     // 유저 값
     private List<UserData> m_UserList = new List<UserData>();
+    public List<UserData> UserList
+    {
+        get { return m_UserList; }
+    }
 
     // 플레이 정보
     public List<PlayHistory> m_PlayStack = new List<PlayHistory>();
@@ -230,9 +234,11 @@ public class GameMgr : Singleton<GameMgr>
     #endregion
 
     #region User Info Control
-    public void ClearUserList()
+    public void BuildUserList()
     {
         m_UserList.Clear();
+        for (int i = 0; i < UserCount; i++)
+            m_UserList.Add(new UserData());
     }
 
     public void AddUserData(UserData inUserData)
@@ -241,9 +247,39 @@ public class GameMgr : Singleton<GameMgr>
             m_UserList.Add(inUserData);
     }
 
+    public void RemoveUserData(int inIndex)
+    {
+        m_UserList.RemoveAt(inIndex);
+    }
+
     public void RemoveUserData(UserData inUserData)
     {
         m_UserList.Remove(inUserData);
+    }
+
+    public void SetUserData(int inIndex, string inValue)
+    {
+        if (inIndex < 0 || inIndex >= m_UserList.Count)
+            DebugLog.PrintError(Utility.BuildString("Index value is wrong. {0}", inIndex));
+        else
+            m_UserList[inIndex].UserName = inValue;
+    }
+
+    public void SetUserDataList(List<UserData> inUserList)
+    {
+        m_UserList.Clear();
+        m_UserList.AddRange(inUserList);
+    }
+
+    public UserData GetUserData(int inIndex)
+    {
+        if (inIndex < 0 || inIndex >= m_UserList.Count)
+        {
+            DebugLog.PrintError(Utility.BuildString("Index value is wrong. {0}", inIndex));
+            return null;
+        }
+        else
+            return m_UserList[inIndex];
     }
     #endregion
 
