@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -6,10 +7,13 @@ using UnityEngine.UI;
 public class OptionPopup_uGUI : MonoBehaviour
 {
     // Player
-    [SerializeField] private Slider m_PlayerSlider = null;
-    [SerializeField] private Button m_PlayerUpButton = null;
-    [SerializeField] private Button m_PlayerDownButton = null;
-    [SerializeField] private TMP_InputField m_PlayerInputField = null;
+    [SerializeField] private Slider m_UserSlider = null;
+    [SerializeField] private Button m_UserUpButton = null;
+    [SerializeField] private Button m_UserDownButton = null;
+    [SerializeField] private TMP_InputField m_UserInputField = null;
+
+    [SerializeField] private GridLayoutGroup m_UserGridGroup = null;
+    [SerializeField] private GameObject m_UserItemPrefab = null;
 
     // Item
     [SerializeField] private Slider m_ItemSlider = null;
@@ -33,51 +37,56 @@ public class OptionPopup_uGUI : MonoBehaviour
         m_ItemCount = GameMgr.Instance.ItemCount;
 
         #region Player
-        if (m_PlayerDownButton != null)
+        if (m_UserDownButton != null)
         {
-            m_PlayerDownButton.onClick.RemoveAllListeners();
-            m_PlayerDownButton.onClick.AddListener(() => {
-                m_UserCount = Mathf.Max(1, m_UserCount - 1);
-                UpdateUserSlider(m_UserCount);
+            m_UserDownButton.onClick.RemoveAllListeners();
+            m_UserDownButton.onClick.AddListener(() => {
+                var newValue = Mathf.Max(1, m_UserCount - 1);
+                UpdateUserSlider(newValue);
             });
         }
 
-        if(m_PlayerUpButton != null)
+        if(m_UserUpButton != null)
         {
-            m_PlayerUpButton.onClick.RemoveAllListeners();
-            m_PlayerUpButton.onClick.AddListener(() => {
-                m_UserCount = Mathf.Min(GameMgr.MAX_USER_COUNT, m_UserCount + 1);
-                UpdateUserSlider(m_UserCount);
+            m_UserUpButton.onClick.RemoveAllListeners();
+            m_UserUpButton.onClick.AddListener(() => {
+                var newValue = Mathf.Min(GameMgr.MAX_USER_COUNT, m_UserCount + 1);
+                UpdateUserSlider(newValue);
             });
         }
 
-        if(m_PlayerSlider != null)
+        if(m_UserSlider != null)
         {
-            m_PlayerSlider.minValue = 1;
-            m_PlayerSlider.maxValue = GameMgr.MAX_USER_COUNT;
-            m_PlayerSlider.value = m_UserCount;
+            m_UserSlider.minValue = 1;
+            m_UserSlider.maxValue = GameMgr.MAX_USER_COUNT;
+            m_UserSlider.value = m_UserCount;
 
-            m_PlayerSlider.onValueChanged.RemoveAllListeners();
-            m_PlayerSlider.onValueChanged.AddListener((value) => {
-                m_UserCount = (int)value;
-                UpdateUserLabel();
+            m_UserSlider.onValueChanged.RemoveAllListeners();
+            m_UserSlider.onValueChanged.AddListener((value) => {
+                int newValue = (int)value;
+                UpdateUserLabel(newValue);
+                RebuildUserList(m_UserCount, newValue);
+                m_UserCount = newValue;
             });
         }
 
-        if(m_PlayerInputField != null)
+        if(m_UserInputField != null)
         {
-            UpdateUserLabel();
-            m_PlayerInputField.onValueChanged.RemoveAllListeners();
-            m_PlayerInputField.onValueChanged.AddListener((value) => {
-                if(int.TryParse(value, out m_UserCount))
+            UpdateUserLabel(m_UserCount);
+            m_UserInputField.onValueChanged.RemoveAllListeners();
+            m_UserInputField.onValueChanged.AddListener((value) => {
+                int newValue = 0;
+                if(int.TryParse(value, out newValue))
                 {
-                    if(m_UserCount < 1 || m_UserCount > GameMgr.MAX_USER_COUNT)
-                        m_PlayerInputField.text = Mathf.Max(Mathf.Min(m_UserCount, 1), GameMgr.MAX_USER_COUNT).ToString();
+                    if(newValue < 1 || newValue > GameMgr.MAX_USER_COUNT)
+                        m_UserInputField.text = Mathf.Max(Mathf.Min(newValue, 1), GameMgr.MAX_USER_COUNT).ToString();
                     else
-                        UpdateUserSlider(m_UserCount);
+                        UpdateUserSlider(newValue);
                 }
             });
         }
+
+        RebuildUserList(0, m_UserCount);
         #endregion
 
         #region Item
@@ -149,12 +158,47 @@ public class OptionPopup_uGUI : MonoBehaviour
 
     private void UpdateUserSlider(int inValue)
     {
-        m_PlayerSlider.value = inValue;
+        m_UserSlider.value = inValue;
     }
 
-    private void UpdateUserLabel()
+    private void UpdateUserLabel(int inValue)
     {
-        m_PlayerInputField.text = m_UserCount.ToString();
+        m_UserInputField.text = inValue.ToString();
+
+    }
+
+    private void RebuildUserList(int inPrevValue, int inNewValue)
+    {
+        var rt = m_UserGridGroup.transform as RectTransform;
+        if (rt != null)
+        {
+            int nHeight = Mathf.Max(1, ((inNewValue + 1) / 2));
+
+            Vector2 sizedt = rt.sizeDelta;
+            sizedt.y = (m_UserGridGroup.cellSize.y * nHeight) + (m_UserGridGroup.padding.top + m_UserGridGroup.padding.bottom);
+            rt.sizeDelta = sizedt;
+
+            // Destroy Items
+            for (int i = rt.childCount - 1; i >= inNewValue; i--)
+            {
+                var child = rt.GetChild(i);
+                if (child != null)
+                    DestroyImmediate(child.gameObject);
+            }
+
+            // Add Items
+            int nDiff = inNewValue - inPrevValue;
+            for (int i = 0; i < nDiff; i++)
+            {
+                var child = Instantiate(m_UserItemPrefab, m_UserGridGroup.gameObject.transform);
+                if (child != null)
+                {
+                    var item = child.GetComponent<UserNameItemPanel_uGUI>();
+                    if (item != null)
+                        item.SetItem("");
+                }
+            }
+        }
     }
 
     private void UpdateItemSlider(int inValue)

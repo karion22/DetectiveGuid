@@ -1122,6 +1122,106 @@ MonoBehaviour:
   m_Horizontal: 1
   m_Vertical: 0
   m_Angle90: 0
+--- !u!1 &1451079403902079208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7313763912777255494}
+  - component: {fileID: 6209820916865045060}
+  - component: {fileID: 1460096324541599723}
+  - component: {fileID: 3569144389460429742}
+  m_Layer: 5
+  m_Name: UserList
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7313763912777255494
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451079403902079208}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4522563660511721976}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 924, y: 132}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6209820916865045060
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451079403902079208}
+  m_CullTransparentMesh: 1
+--- !u!114 &1460096324541599723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451079403902079208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3569144389460429742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451079403902079208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 16
+    m_Right: 16
+    m_Top: 16
+    m_Bottom: 16
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 438, y: 100}
+  m_Spacing: {x: 16, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &1884209005543869459
 GameObject:
   m_ObjectHideFlags: 0
@@ -1689,10 +1789,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4f2a22916abfe14684683bcd8a28289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlayerSlider: {fileID: 8206487919651589914}
-  m_PlayerUpButton: {fileID: 5718843679433814555}
-  m_PlayerDownButton: {fileID: 6472070539743045475}
-  m_PlayerInputField: {fileID: 9029185337070963550}
+  m_UserSlider: {fileID: 8206487919651589914}
+  m_UserUpButton: {fileID: 5718843679433814555}
+  m_UserDownButton: {fileID: 6472070539743045475}
+  m_UserInputField: {fileID: 9029185337070963550}
+  m_UserGridGroup: {fileID: 3569144389460429742}
+  m_UserItemPrefab: {fileID: 4597021696561922898, guid: 66453553fbaa19842a74d788a91b680a, type: 3}
   m_ItemSlider: {fileID: 7865758077100249109}
   m_ItemUpButton: {fileID: 1772266282374858222}
   m_ItemDownButton: {fileID: 8990298714708977032}
@@ -3127,7 +3229,6 @@ GameObject:
   - component: {fileID: 7368257416963366133}
   - component: {fileID: 7887057555729529761}
   - component: {fileID: 5801879664897662593}
-  - component: {fileID: 674228751665887555}
   m_Layer: 5
   m_Name: UserPanel
   m_TagString: Untagged
@@ -3223,28 +3324,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &674228751665887555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6066740427345736323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4f2a22916abfe14684683bcd8a28289, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PlayerSlider: {fileID: 0}
-  m_PlayerUpButton: {fileID: 0}
-  m_PlayerDownButton: {fileID: 0}
-  m_PlayerInputField: {fileID: 0}
-  m_ItemSlider: {fileID: 0}
-  m_ItemUpButton: {fileID: 0}
-  m_ItemDownButton: {fileID: 0}
-  m_ItemInputField: {fileID: 0}
-  m_ApplyBtn: {fileID: 0}
-  m_CloseBtn: {fileID: 0}
 --- !u!1 &6810684536125936616
 GameObject:
   m_ObjectHideFlags: 0
@@ -3698,6 +3777,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2861665519051546407}
+  - {fileID: 7313763912777255494}
   - {fileID: 2061346009894939123}
   m_Father: {fileID: 1634743871126496017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3788,7 +3868,6 @@ GameObject:
   - component: {fileID: 698222145871950776}
   - component: {fileID: 7288277687108370391}
   - component: {fileID: 678011795415606596}
-  - component: {fileID: 8638882086068531472}
   m_Layer: 5
   m_Name: ItemPanel
   m_TagString: Untagged
@@ -3884,28 +3963,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &8638882086068531472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8158226216611454966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4f2a22916abfe14684683bcd8a28289, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PlayerSlider: {fileID: 0}
-  m_PlayerUpButton: {fileID: 0}
-  m_PlayerDownButton: {fileID: 0}
-  m_PlayerInputField: {fileID: 0}
-  m_ItemSlider: {fileID: 0}
-  m_ItemUpButton: {fileID: 0}
-  m_ItemDownButton: {fileID: 0}
-  m_ItemInputField: {fileID: 0}
-  m_ApplyBtn: {fileID: 0}
-  m_CloseBtn: {fileID: 0}
 --- !u!1 &8430488758989044967
 GameObject:
   m_ObjectHideFlags: 0
