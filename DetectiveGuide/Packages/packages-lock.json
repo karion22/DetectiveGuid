@@ -7,7 +7,7 @@
       "dependencies": {
         "com.karion22.utility": "0.0.12"
       },
-      "hash": "7f396efd537f4918389e4519dfc835d7ecc928d5"
+      "hash": "c839ce9822461937a8c0363e7017965a6c063893"
     },
     "com.karion22.utility": {
       "version": "https://github.com/karion22/Unity_Utility.git",
@@ -16,7 +16,7 @@
       "dependencies": {
         "com.unity.addressables": "1.21.21"
       },
-      "hash": "edceab57ffaabbb5fb3847176c4e516da8a7a788"
+      "hash": "5b49709ae5cf5cdc3b626cb1f74df08bff2abb05"
     },
     "com.unity.addressables": {
       "version": "1.21.21",
