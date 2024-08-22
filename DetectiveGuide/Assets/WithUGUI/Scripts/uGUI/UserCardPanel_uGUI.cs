@@ -9,8 +9,8 @@ public class UserCardPanel_uGUI : MonoBehaviour
     [SerializeField] private TMP_Text[] m_Items = null;
     [SerializeField] private Image m_EnableImg = null;
 
-    [SerializeField] private Texture2D m_EnableTex = null;
-    [SerializeField] private Texture2D m_DisableTex = null;
+    [SerializeField] private Sprite m_EnableTex = null;
+    [SerializeField] private Sprite m_DisableTex = null;
 
     [SerializeField] private GameObject m_DetailPrefab = null;
 
@@ -63,7 +63,7 @@ public class UserCardPanel_uGUI : MonoBehaviour
             }
 
             m_EnableImg.gameObject.SetActive(true);
-            SetEnable(true);
+            SetEnable(m_PlayItem.m_Complete);
         }
     }
 
@@ -71,7 +71,7 @@ public class UserCardPanel_uGUI : MonoBehaviour
     {
         if(m_EnableImg.gameObject.activeInHierarchy)
         {
-            m_EnableImg.materialForRendering.mainTexture = isEnable ? m_EnableTex : m_DisableTex;
+            m_EnableImg.overrideSprite = isEnable ? m_EnableTex : m_DisableTex;
         }
     }
 
@@ -131,8 +131,7 @@ public class UserCardPanel_uGUI : MonoBehaviour
 
 
         // 턴 사용 여부
-        if (isComplete == true)
-            m_PlayItem.m_Complete = true;
+        m_PlayItem.m_Complete = isComplete;
 
         SetValue(m_PlayItem);
     }

@@ -1,4 +1,3 @@
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,9 +8,9 @@ public class UserDetailPopup_uGUI : MonoBehaviour
     [SerializeField] private TMP_Text m_UserNameLabel = null;
 
     [SerializeField] private Toggle m_TurnToggle = null;
-    [SerializeField] private TMP_Dropdown m_NameDropdown = null;
-    [SerializeField] private TMP_Dropdown m_WeaponDropdown = null;
-    [SerializeField] private TMP_Dropdown m_PlaceDropdown = null;
+    [SerializeField] private UserDetailPopupItemPanel_uGUI m_NameItemPanel = null;
+    [SerializeField] private UserDetailPopupItemPanel_uGUI m_WeaponItemPanel = null;
+    [SerializeField] private UserDetailPopupItemPanel_uGUI m_PlaceItemPanel = null;
 
     [SerializeField] private Button m_ApplyBtn = null;
     [SerializeField] private Button m_CancelBtn = null;
@@ -19,32 +18,29 @@ public class UserDetailPopup_uGUI : MonoBehaviour
     public UnityAction<string, string, string, bool> onApplyBtnClicked = null;
     public UnityAction onClosed = null;
 
-    private string m_Name = string.Empty;
-    private string m_Weapon = string.Empty;
-    private string m_Place = string.Empty;
+    private string m_Name = "";
+    private bool m_NameToggle = true;
+
+    private string m_Weapon = "";
+    private bool m_WeaponToggle = true;
+
+    private string m_Place = "";
+    private bool m_PlaceToggle = true;
+
     private bool m_UseTurn = true;
 
     public void Initialize(PlayItem inItem)
     {
         m_UserNameLabel.text = inItem.m_UserName;
 
-        var names = GameMgr.Instance.DataSet.Names.ToList();
-        m_NameDropdown.AddOptions(names);
-        m_NameDropdown.onValueChanged.RemoveAllListeners();
-        m_NameDropdown.onValueChanged.AddListener((value) => { m_Name = names[value]; });
-        m_Name = m_NameDropdown.options[0].text;
+        m_NameItemPanel.Initialize(GameMgr.Instance.DataSet.Names, (value) => { m_Name = value; }, m_NameToggle, (value) => { m_NameToggle = value; });
+        m_Name = GameMgr.Instance.DataSet.Names[0];
 
-        var weapons = GameMgr.Instance.DataSet.Weapons.ToList();
-        m_WeaponDropdown.AddOptions(weapons);
-        m_WeaponDropdown.onValueChanged.RemoveAllListeners();
-        m_WeaponDropdown.onValueChanged.AddListener((value) => { m_Weapon = names[value]; });
-        m_Weapon = m_WeaponDropdown.options[0].text;
+        m_WeaponItemPanel.Initialize(GameMgr.Instance.DataSet.Weapons, (value) => { m_Weapon = value; }, m_WeaponToggle, (value) => { m_WeaponToggle = value; });
+        m_Weapon = GameMgr.Instance.DataSet.Weapons[0];
 
-        var places = GameMgr.Instance.DataSet.Places.ToList();
-        m_PlaceDropdown.AddOptions(places);
-        m_PlaceDropdown.onValueChanged.RemoveAllListeners();
-        m_PlaceDropdown.onValueChanged.AddListener((value) => { m_Place = names[value]; });
-        m_Place = m_PlaceDropdown.options[0].text;
+        m_PlaceItemPanel.Initialize(GameMgr.Instance.DataSet.Places, (value) => { m_Place = value; }, m_PlaceToggle, (value) => { m_PlaceToggle = value; });
+        m_Place = GameMgr.Instance.DataSet.Places[0];
 
         m_UseTurn = inItem.m_Complete;
         m_TurnToggle.SetIsOnWithoutNotify(inItem.m_Complete);
@@ -62,9 +58,7 @@ public class UserDetailPopup_uGUI : MonoBehaviour
                     {
                         m_Name = item.m_Value;
                         if(string.IsNullOrEmpty(m_Name) == false)
-                        {
-                            m_NameDropdown.value = m_NameDropdown.options.FindIndex((value) => { return (value.text == item.m_Value); });
-                        }
+                            m_NameItemPanel.Select(item.m_Value);
                     }
                     break;
 
@@ -72,9 +66,7 @@ public class UserDetailPopup_uGUI : MonoBehaviour
                     {
                         m_Weapon = item.m_Value;
                         if (string.IsNullOrEmpty(m_Weapon) == false)
-                        {
-                            m_WeaponDropdown.value = m_WeaponDropdown.options.FindIndex((value) => { return value.text == item.m_Value; });
-                        }
+                            m_WeaponItemPanel.Select(item.m_Value);
                     }
                     break;
 
@@ -82,9 +74,7 @@ public class UserDetailPopup_uGUI : MonoBehaviour
                     {
                         m_Place = item.m_Value;
                         if(string.IsNullOrEmpty(m_Place) == false)
-                        {
-                            m_PlaceDropdown.value = m_PlaceDropdown.options.FindIndex((value) => { return value.text == item.m_Value; });
-                        }
+                            m_PlaceItemPanel.Select(item.m_Value);
                     }
                     break;
             }
@@ -93,7 +83,11 @@ public class UserDetailPopup_uGUI : MonoBehaviour
 
         m_ApplyBtn.onClick.RemoveAllListeners();
         m_ApplyBtn.onClick.AddListener(() => {
-            onApplyBtnClicked?.Invoke(m_Name, m_Weapon, m_Place, m_UseTurn);
+            string newName = m_NameToggle ? m_Name : string.Empty;
+            string newWeapon = m_WeaponToggle ? m_Weapon : string.Empty;
+            string newPlace = m_PlaceToggle ? m_Place : string.Empty;
+
+            onApplyBtnClicked?.Invoke(newName, newWeapon, newPlace, m_UseTurn);
             onClosed?.Invoke();
         });
 
