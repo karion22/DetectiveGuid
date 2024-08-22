@@ -40,7 +40,7 @@ public class PlayDetailItem
 
     public string GetStandardValue()
     {
-        return Utility.BuildString("<color=#dedede>{0}</color>{1}", GetString(), m_Value);
+        return Utility.BuildString("<color=#dedede>{0}</color> : {1}", GetString(), m_Value);
     }
 
     private string GetString()
@@ -53,12 +53,19 @@ public class PlayDetailItem
             _ => ""
         });
     }
+
+    public void CopyTo(PlayDetailItem inItem)
+    {
+        inItem.m_Type = m_Type;
+        inItem.m_Value = new string(m_Value);
+    }
 }
 
 public class PlayItem
 {
     public int m_Turn;
     public string m_UserName;
+    public bool m_Complete;
     public List<PlayDetailItem> m_Items = new List<PlayDetailItem>();
 
     public void Add(PlayDetailItem inItem)
@@ -74,6 +81,19 @@ public class PlayItem
 
         if(item != null)
             m_Items?.Remove(item);
+    }
+
+    public void CopyTo(PlayItem inItem)
+    {
+        inItem.m_Turn = m_Turn;
+        inItem.m_UserName = new string(m_UserName);
+        inItem.m_Items.Clear();
+        foreach (var item in m_Items)
+        {
+            PlayDetailItem detailItem = new PlayDetailItem();
+            item.CopyTo(detailItem);
+            inItem.m_Items.Add(detailItem);
+        }
     }
 }
 

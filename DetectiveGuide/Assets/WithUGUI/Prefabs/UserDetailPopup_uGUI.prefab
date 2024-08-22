@@ -1131,8 +1131,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1212,7 +1212,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1782304397679986583
 MonoBehaviour:
@@ -1375,7 +1375,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 28}
+  m_SizeDelta: {x: 0, y: 38}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &2798128536916177942
 GameObject:
@@ -1940,7 +1940,7 @@ GameObject:
   - component: {fileID: 8653003373030064842}
   - component: {fileID: 6521639207628430313}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: PlaceDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2098,7 +2098,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5652653419468816854
 MonoBehaviour:
@@ -2728,6 +2728,7 @@ GameObject:
   - component: {fileID: 5065356373986702584}
   - component: {fileID: 8656380980073744065}
   - component: {fileID: 6159675506336933215}
+  - component: {fileID: 3713723068260047239}
   m_Layer: 5
   m_Name: UserDetailPopup_uGUI
   m_TagString: Untagged
@@ -2819,6 +2820,25 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3713723068260047239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4339985126324267906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 833f337827cda5b41ae247f947e179d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UserNameLabel: {fileID: 6458831190741365877}
+  m_TurnToggle: {fileID: 5665246853950451039}
+  m_NameDropdown: {fileID: 2139347909948889063}
+  m_WeaponDropdown: {fileID: 8645093109087455614}
+  m_PlaceDropdown: {fileID: 6521639207628430313}
+  m_ApplyBtn: {fileID: 5876934510011278919}
+  m_CancelBtn: {fileID: 4126236920567387038}
 --- !u!1 &4344789452937305707
 GameObject:
   m_ObjectHideFlags: 0
@@ -3469,7 +3489,7 @@ GameObject:
   - component: {fileID: 6727485171157916219}
   - component: {fileID: 8645093109087455614}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: WeaponDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3768,8 +3788,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3846,7 +3866,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 28}
+  m_SizeDelta: {x: 0, y: 38}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &6107199827667371262
 GameObject:
@@ -3885,7 +3905,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6463454852678661389
 MonoBehaviour:
@@ -4027,8 +4047,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4345,7 +4365,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 28}
+  m_SizeDelta: {x: 0, y: 38}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &6597943569663581962
 GameObject:
@@ -4663,7 +4683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4861,7 +4881,7 @@ GameObject:
   - component: {fileID: 5428343454544217446}
   - component: {fileID: 6458831190741365877}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: UserNameLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5577,7 +5597,7 @@ GameObject:
   - component: {fileID: 5367442619634783943}
   - component: {fileID: 2139347909948889063}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: NameDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

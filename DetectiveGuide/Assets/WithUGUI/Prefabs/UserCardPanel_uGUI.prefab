@@ -220,6 +220,7 @@ MonoBehaviour:
   m_EnableImg: {fileID: 469344781027784712}
   m_EnableTex: {fileID: 2800000, guid: 0e07c8fb8158b4d95bc5184c10777d99, type: 3}
   m_DisableTex: {fileID: 2800000, guid: d360c761a90c641d9b704106d9dacba1, type: 3}
+  m_DetailPrefab: {fileID: 4339985126324267906, guid: b6230e6f3df206f49bc3d908b8295ab3, type: 3}
 --- !u!1 &3261377093693361560
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 16
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
@@ -635,7 +636,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -771,7 +772,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -907,7 +908,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0

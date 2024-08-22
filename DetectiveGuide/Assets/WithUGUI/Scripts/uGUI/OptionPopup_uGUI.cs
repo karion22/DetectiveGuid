@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class OptionPopup_uGUI : MonoBehaviour
 {
+    #region UI Property
     // Player
     [SerializeField] private Slider m_UserSlider = null;
     [SerializeField] private Button m_UserUpButton = null;
@@ -24,6 +25,7 @@ public class OptionPopup_uGUI : MonoBehaviour
     // 
     [SerializeField] private Button m_ApplyBtn = null;
     [SerializeField] private Button m_CloseBtn = null;
+    #endregion
 
     //
     private int m_UserCount = 0;
@@ -142,7 +144,8 @@ public class OptionPopup_uGUI : MonoBehaviour
         }
         #endregion
 
-        if(m_ApplyBtn != null)
+        #region Buttons
+        if (m_ApplyBtn != null)
         {
             m_ApplyBtn.onClick.RemoveAllListeners();
             m_ApplyBtn.onClick.AddListener(() => {
@@ -160,6 +163,7 @@ public class OptionPopup_uGUI : MonoBehaviour
                 Close(); 
             });
         }
+        #endregion
     }
 
     private void UpdateUserSlider(int inValue)
