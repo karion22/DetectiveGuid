@@ -28,8 +28,6 @@ public class GameScene_uGUI : GameScene
     [SerializeField] private GameObject m_SettingPrefab = null;
     private List<GameObject> m_PopupList = new List<GameObject>();
 
-    private int m_Turn = 1;
-
     [ExecuteInEditMode]
     [ContextMenu("Auto Find UI")]
     public void AutoFindUI()
@@ -107,12 +105,12 @@ public class GameScene_uGUI : GameScene
 
     private void UpdateTurn()
     {
-        m_PlayTurnText.text = m_Turn.ToString();
+        m_PlayTurnText.text = GameMgr.Instance.GameTurn.ToString();
     }
 
     private void NextTurn()
     {
-        m_Turn++;
+        GameMgr.Instance.IncreaseTurn();
 
         for (int i = 0, end = m_Items.Count; i < end; i++)
             m_Items[i].SetEnable(true);

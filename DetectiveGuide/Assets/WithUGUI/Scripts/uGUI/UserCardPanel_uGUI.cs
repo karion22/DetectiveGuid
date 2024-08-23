@@ -63,7 +63,7 @@ public class UserCardPanel_uGUI : MonoBehaviour
             }
 
             m_EnableImg.gameObject.SetActive(true);
-            SetEnable(m_PlayItem.m_Complete);
+            SetEnable(m_PlayItem.m_Turn < GameMgr.Instance.GameTurn);
         }
     }
 
@@ -129,9 +129,8 @@ public class UserCardPanel_uGUI : MonoBehaviour
         else
             m_PlayItem.m_Items[targetIdx].m_Value = new string(inPlace);
 
-
-        // 턴 사용 여부
-        m_PlayItem.m_Complete = isComplete;
+        if (isComplete)
+            m_PlayItem.m_Turn = GameMgr.Instance.GameTurn;
 
         SetValue(m_PlayItem);
     }

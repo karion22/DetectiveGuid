@@ -65,7 +65,6 @@ public class PlayItem
 {
     public int m_Turn;
     public string m_UserName;
-    public bool m_Complete;
     public List<PlayDetailItem> m_Items = new List<PlayDetailItem>();
 
     public void Add(PlayDetailItem inItem)
@@ -154,6 +153,8 @@ public class GameMgr : Singleton<GameMgr>
 
     // 최대 인원 수
     public const int MAX_USER_COUNT = 8;
+
+    public int GameTurn = 1;
 
     // 게임 셋팅 값
     private GameDataSetScriptable m_DataSet;
@@ -303,8 +304,26 @@ public class GameMgr : Singleton<GameMgr>
     }
     #endregion
 
+    #region Turn
+    public void IncreaseTurn()
+    {
+        GameTurn++;
+    }
+
+    public void SetTurn(int inTurn)
+    {
+        GameTurn = inTurn;
+    }
+
+    public void ResetTurn()
+    {
+        GameTurn = 1;
+    }
+    #endregion
+
     public void Restart()
     {
         m_PlayStack.Clear();
+        ResetTurn();
     }
 }

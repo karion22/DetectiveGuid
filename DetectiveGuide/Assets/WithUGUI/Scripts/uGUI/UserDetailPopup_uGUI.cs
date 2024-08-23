@@ -42,8 +42,8 @@ public class UserDetailPopup_uGUI : MonoBehaviour
         m_PlaceItemPanel.Initialize(GameMgr.Instance.DataSet.Places, (value) => { m_Place = value; }, m_PlaceToggle, (value) => { m_PlaceToggle = value; });
         m_Place = GameMgr.Instance.DataSet.Places[0];
 
-        m_UseTurn = inItem.m_Complete;
-        m_TurnToggle.SetIsOnWithoutNotify(inItem.m_Complete);
+        m_UseTurn = inItem.m_Turn < GameMgr.Instance.GameTurn;
+        m_TurnToggle.SetIsOnWithoutNotify(m_UseTurn);
         m_TurnToggle.onValueChanged.RemoveAllListeners();
         m_TurnToggle.onValueChanged.AddListener((value) => { m_UseTurn = value; });
 
